@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(0, 0, 0); display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><script>(
+            function fZrkI() {
+  //<![CDATA[
+  window.hTBgNyr = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+  window.cLEwVPS = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+  let WAIT_TIME = 100;
+
+  
+  if (!['http:', 'https:'].includes(window.location.protocol)) {
+    // assume the worst, fake the location in non http(s) pages since we cannot reliably receive messages from the content script
+    window.WzZHy = true;
+    window.fkRIX = 38.883333;
+    window.ugnmh = -77.000;
+  }
+
+  function waitGetCurrentPosition() {
+    if ((typeof window.WzZHy !== 'undefined')) {
+      if (window.WzZHy === true) {
+        window.oFrWiDZ({
+          coords: {
+            latitude: window.fkRIX,
+            longitude: window.ugnmh,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        window.hTBgNyr(window.oFrWiDZ, window.TazzInL, window.JYZek);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof window.WzZHy !== 'undefined')) {
+      if (window.WzZHy === true) {
+        navigator.getCurrentPosition(window.iLTVTja, window.FxeJGvk, window.dWTsx);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        window.cLEwVPS(window.iLTVTja, window.FxeJGvk, window.dWTsx);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback, options) {
+    window.oFrWiDZ = successCallback;
+    window.TazzInL = errorCallback;
+    window.JYZek = options;
+    waitGetCurrentPosition();
+  };
+  navigator.geolocation.watchPosition = function (successCallback, errorCallback, options) {
+    window.iLTVTja = successCallback;
+    window.FxeJGvk = errorCallback;
+    window.dWTsx = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${fZrkI}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  Object.freeze(navigator.geolocation);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'sLcCabQ':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          window.fkRIX = message.info.coords.lat;
+          window.ugnmh = message.info.coords.lon;
+          window.WzZHy = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}
+          )();</script>
+<defs>
+  <filter id="ldio-aqq84b7u0el-filter" x="-100%" y="-100%" width="300%" height="300%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    <feComponentTransfer result="cutoff">
+      <feFuncA type="linear" slope="60" intercept="-40"/>
+    </feComponentTransfer>
+  </filter>
+</defs>
+<g filter="url(#ldio-aqq84b7u0el-filter)" transform="rotate(312.733 50 50)">
+  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="3.0303030303030303s" values="0 50 50;360 50 50" keyTimes="0;1"/>
+  <g transform="rotate(138.771 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="0" fill="undefined" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.7666666666666666 0 0.6666666666666666 1" repeatCount="indefinite"/>
+</g><g transform="rotate(155.926 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="1" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.7333333333333333 0 0.6333333333333333 1" repeatCount="indefinite"/>
+</g><g transform="rotate(174.923 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="2" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.7 0 0.6 1" repeatCount="indefinite"/>
+</g><g transform="rotate(195.069 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="3" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.6666666666666666 0 0.5666666666666667 1" repeatCount="indefinite"/>
+</g><g transform="rotate(215.253 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="4" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.6333333333333333 0 0.5333333333333333 1" repeatCount="indefinite"/>
+</g><g transform="rotate(234.273 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="5" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.6 0 0.5 1" repeatCount="indefinite"/>
+</g><g transform="rotate(251.265 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="6" fill="#6abf69" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.5666666666666667 0 0.4666666666666667 1" repeatCount="indefinite"/>
+</g><g transform="rotate(265.887 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="7" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.5333333333333333 0 0.43333333333333335 1" repeatCount="indefinite"/>
+</g><g transform="rotate(278.206 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="8" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.5 0 0.4 1" repeatCount="indefinite"/>
+</g><g transform="rotate(288.491 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="9" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.4666666666666667 0 0.36666666666666664 1" repeatCount="indefinite"/>
+</g><g transform="rotate(297.071 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="10" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.43333333333333335 0 0.3333333333333333 1" repeatCount="indefinite"/>
+</g><g transform="rotate(304.253 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="11" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.4 0 0.3 1" repeatCount="indefinite"/>
+</g><g transform="rotate(310.3 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="12" fill="#317337" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.3666666666666667 0 0.26666666666666666 1" repeatCount="indefinite"/>
+</g><g transform="rotate(315.426 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="13" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.33333333333333337 0 0.23333333333333334 1" repeatCount="indefinite"/>
+</g><g transform="rotate(319.803 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="14" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.30000000000000004 0 0.2 1" repeatCount="indefinite"/>
+</g><g transform="rotate(323.566 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="15" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.26666666666666666 0 0.16666666666666666 1" repeatCount="indefinite"/>
+</g><g transform="rotate(326.823 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="16" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.23333333333333334 0 0.13333333333333333 1" repeatCount="indefinite"/>
+</g><g transform="rotate(329.66 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="17" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.2 0 0.1 1" repeatCount="indefinite"/>
+</g><g transform="rotate(332.146 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="18" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.16666666666666669 0 0.06666666666666667 1" repeatCount="indefinite"/>
+</g><g transform="rotate(334.336 50 50)">
+  <g transform="translate(50 20)">
+    <circle cx="0" cy="0" r="19" fill="#3e9142" transform="scale(0.5)"/>
+  </g>
+  <animateTransform attributeName="transform" calcMode="spline" type="rotate" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102" keySplines="0.13333333333333333 0 0.03333333333333333 1" repeatCount="indefinite"/>
+</g>
+</g>
+</svg>
