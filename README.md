@@ -11,13 +11,11 @@ Womb Tunes leverages AI and machine learning models to transform ultrasound imag
 - **Ultrasound to Spectrogram Conversion**: Converts uploaded ultrasound images into spectrograms and raw audio.
 - **AI-Powered Music Generation**: Utilizes models like Stable Audio, MusicGen, and others to create music based on spectrograms and image descriptions.
 - **Interactive Web Interface**: Provides an easy-to-use interface where users can upload ultrasounds and receive personalized soundtracks.
-- **Seamless Data Handling**: Efficiently stores and retrieves data using Supabase, with backend processing managed through Google Cloud Run.
 
 ## System Architecture
 
-- **Frontend**: Built with React and hosted on Vercel, offering a user-friendly interface for interactions.
-- **Backend**: Processes images and handles AI model interactions via Google Cloud Run.
-- **Data Storage**: Supabase is used to store ultrasound images, spectrograms, and generated audio files.
+- **DEVOPS**: Built with React and hosted on Vercel, offering a user-friendly interface for interactions.
+
 - **AI Integration**: AI models (Vertex AI, Hugging Face) are integrated to generate music from the spectrograms.
 
 ## Use Cases
