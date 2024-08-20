@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Womb Tunes
 
-## Getting Started
+Womb Tunes is a prototype project developed as part of the Cybernetic Imagination Residency at ANU’s School of Cybernetics. The goal is to create a digital product that converts ultrasound images into personalized soundtracks, offering both a unique artistic experience and potential commercial application.
 
-First, run the development server:
+## Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Womb Tunes leverages AI and machine learning models to transform ultrasound images into music. The process involves converting ultrasound images into spectrograms, which are then used as input for music generation models. The generated music reflects the unique data points of each ultrasound, creating a personalized auditory experience.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Ultrasound to Spectrogram Conversion**: Converts uploaded ultrasound images into spectrograms and raw audio.
+- **AI-Powered Music Generation**: Utilizes models like Stable Audio, MusicGen, and others to create music based on spectrograms and image descriptions.
+- **Interactive Web Interface**: Provides an easy-to-use interface where users can upload ultrasounds and receive personalized soundtracks.
+- **Seamless Data Handling**: Efficiently stores and retrieves data using Supabase, with backend processing managed through Google Cloud Run.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## System Architecture
 
-## Learn More
+- **Frontend**: Built with React and hosted on Vercel, offering a user-friendly interface for interactions.
+- **Backend**: Processes images and handles AI model interactions via Google Cloud Run.
+- **Data Storage**: Supabase is used to store ultrasound images, spectrograms, and generated audio files.
+- **AI Integration**: AI models (Vertex AI, Hugging Face) are integrated to generate music from the spectrograms.
 
-To learn more about Next.js, take a look at the following resources:
+## Use Cases
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Artistic Installations**: Womb Tunes can be exhibited as part of interactive installations at galleries or festivals.
+- **Personalized Experiences**: Families can create unique soundtracks for their ultrasound images.
+- **Research and Development**: The project explores the intersection of technology, art, and human connection through sound.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Future Development
 
-## Deploy on Vercel
+The Womb Tunes prototype lays the foundation for further development into a fully commercial product. Future iterations could expand on the user experience, integrate additional adaptive engines, and explore deeper customization options for sound generation.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For more information on the concepts and research behind Womb Tunes, please refer to the project documentation.
