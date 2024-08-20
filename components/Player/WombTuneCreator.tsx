@@ -25,7 +25,7 @@ export default function WombTuneCreator({ onComplete }: WombTuneCreatorProps) {
   const [tuneName, setTuneName] = useState('')
 
   const genres = ['Lullaby', 'Classical', 'Electronic', 'Jazz', 'New Age', 'Ambient']
-  const feelings = ['Joyful', 'Calm', 'Excited', 'Nervous', 'Hopeful', 'Overwhelmed']
+  const feelings = ['Joyful', 'Calm', 'Excited', 'Nervous', 'Hopeful', 'Lovey']
 
   const handleNext = () => {
     if (step < 4) {
@@ -49,7 +49,7 @@ export default function WombTuneCreator({ onComplete }: WombTuneCreatorProps) {
               <HeartPulseIcon className="text-fuchsia-500 w-16 h-16 animate-pulse" />
             </div>
             <h2 className="text-green-500 text-center mb-8 text-xl font-semibold">
-              Set your baby`s heart rate
+              Set your foetal heart rate
             </h2>
             <div className="space-y-4">
               <Slider
