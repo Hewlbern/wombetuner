@@ -3,7 +3,7 @@ import { useState } from "react";
 // @ts-ignore
 import { imageToAudio, leftToRightRGB } from "image-to-audio";
 import { generateCLIP, HuggingfaceResponse } from "./api/generateCLIP";
-import { generateSong } from "./api/generateSong";
+import { generateSong, generateMelody } from "./api/generateSong";
 
 // List of fallback descriptions for ultrasound images and spectrograms
 const ultrasoundFallbacks = [
@@ -89,13 +89,11 @@ const useImageConverter = () => {
   ) => {
     setLoading(true);
     try {
-      console.log("Starting image conversion process...");
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error(`Failed to fetch image: ${res.status} ${res.statusText}`);
       }
       const buffer = await res.arrayBuffer();
-      console.log("Image fetched successfully, converting to audio...");
 
       const audioResult = await imageToAudio(
         buffer,
@@ -107,15 +105,13 @@ const useImageConverter = () => {
         throw new Error("Audio conversion failed or returned incomplete data.");
       }
 
-      console.log("Audio conversion successful, creating spectrogram...");
       const spectrogramData = new Uint8Array(audioResult.imageData.data.flat());
       const spectrogramBlob = new Blob([spectrogramData.buffer], {
-        type: "image/png",
+        type: "image/jpeg",
       });
       const spectrogramUrl = URL.createObjectURL(spectrogramBlob);
       setResult({ audioBlob: audioResult.blob, spectrogramUrl });
 
-      console.log("Generating CLIP for ultrasound image...");
       const ultrasoundResult = await generateClipResult(
         file,
         ["ultrasound", "pregnancy scan", "fetal imaging"],
@@ -123,7 +119,6 @@ const useImageConverter = () => {
       );
       setInitialImageQueryResult(ultrasoundResult);
 
-      console.log("Generating CLIP for spectrogram...");
       const spectrogramResult = await generateClipResult(
         spectrogramBlob,
         ["spectrogram", "audio visualization", "frequency plot", "sound wave", "acoustic analysis", "audio spectrum", "sonogram", "waveform display"],
@@ -131,7 +126,6 @@ const useImageConverter = () => {
       );
       setSpectrogramQueryResult(spectrogramResult);
 
-      // Incorporate WombTune data into the song generation prompt
       const description = `${ultrasoundResult}; ${spectrogramResult}; 
         Heart rate: ${wombTuneData.heartRate} BPM; 
         Genre: ${wombTuneData.genre}; 
@@ -139,18 +133,33 @@ const useImageConverter = () => {
         Name: ${wombTuneData.name}; 
         atmospheric, teardrop`;
       
-      const songResponse = await generateSong(description);
-
-      if (songResponse && songResponse.blob) {
-        setSongBlob(songResponse.blob);
-      } else {
-        throw new Error("Failed to receive valid song blob.");
+      // Try generateMelody first
+      try {
+        const melodyResponse = await generateMelody({
+          prompt: description,
+          input_audio: URL.createObjectURL(audioResult.blob),
+          duration: 30, // Adjust as needed
+          model_version: "melody-large"
+        });
+        if (melodyResponse && melodyResponse.url) {
+          const songResponse = await fetch(melodyResponse.url);
+          setSongBlob(await songResponse.blob());
+        } else {
+          throw new Error("Failed to receive valid melody URL.");
+        }
+      } catch (melodyError) {
+        // If generateMelody fails, fall back to generateSong
+        console.warn("Melody generation failed, falling back to song generation:", melodyError);
+        const songResponse = await generateSong(description);
+        if (songResponse && songResponse.blob) {
+          setSongBlob(songResponse.blob);
+        } else {
+          throw new Error("Failed to receive valid song blob.");
+        }
       }
     } catch (e) {
-      console.error("Error during image conversion process:", e);
       if (e instanceof Error) {
-        console.error("Error message:", e.message);
-        console.error("Error stack:", e.stack);
+        // Error handling remains, but without console.error
       }
       setInitialImageQueryResult({ error: "Failed to analyze the image." });
       setSpectrogramQueryResult({
@@ -169,15 +178,11 @@ const useImageConverter = () => {
     try {
       const query: HuggingfaceResponse | null = await generateCLIP(image, { candidate_labels: candidateLabels });
       if (query && query.result) {
-        console.log("CLIP generation successful:", query.result);
-        // Assuming the result is an array of objects with 'label' property
         return query.result.map((item: any) => item.label).join(", ");
       } else {
-        console.warn("CLIP generation returned null or undefined result, using fallback.");
         return getRandomDescription(fallbacks);
       }
     } catch (error) {
-      console.error("Error in generateClipResult:", error);
       return getRandomDescription(fallbacks);
     }
   };
@@ -193,7 +198,5 @@ const useImageConverter = () => {
 };
 
 export default useImageConverter;
-
-
 
 
