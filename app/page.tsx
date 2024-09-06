@@ -36,7 +36,7 @@ const Home = () => {
   const handleSonogramClick = async (imageSrc: string) => {
     const response = await fetch(imageSrc);
     const blob = await response.blob();
-    const file = new File([blob], "sonogram.png", { type: "image/png" });
+    const file = new File([blob], "sonogram.jpeg", { type: "image/jpeg" });
     setSelectedImage(file);
     setCreatorStep(1); // Move to WombTune Creator step
   };
