@@ -1,4 +1,4 @@
-import Replicate from "replicate";
+
 
 // api/generateSong.ts
   export interface HuggingfaceResponse {
@@ -44,15 +44,32 @@ import Replicate from "replicate";
 
   export const generateMelody = async (input: ReplicateInput): Promise<ReplicateResponse | null> => {
     try {
-      const replicate = new Replicate();
-      
-      const output = await replicate.run(
-        "meta/musicgen:671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb",
-        { input }
-      );
+      const replicateApiToken = process.env.REPLICATE_API_TOKEN;
+      if (!replicateApiToken) {
+        throw new Error('REPLICATE_API_TOKEN is not set');
+      }
 
-      if (typeof output === 'string') {
-        return { url: output };
+      const response = await fetch('https://api.replicate.com/v1/predictions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${replicateApiToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          version: "671ac645ce5e552cc63a54a2bbff63fcf798043055d2dac5fc9e36a837eedcfb",
+          input: input,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Assuming the API returns a URL in the output field
+      if (data.output && typeof data.output === 'string') {
+        return { url: data.output };
       } else {
         throw new Error('Unexpected output format from Replicate API');
       }
